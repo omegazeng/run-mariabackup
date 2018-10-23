@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# Create a backup user
+# GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'backup'@'localhost' identified by 'YourPassword';
+# FLUSH PRIVILEGES;
+#
+# Usage:
+# MYSQL_PASSWORD=YourPassword bash run-mariabackup.sh
+
 MYSQL_USER=backup
 #MYSQL_PASSWORD=YourPassword
 MYSQL_HOST=localhost
@@ -99,7 +106,7 @@ then
   mkdir -p $TARGETDIR
 
   # Create incremental Backup
-  $BACKCMD --backup $USEROPTIONS $ARGS --extra-lsndir=$TARGETDIR --incremental-basedir=$INCRBASEDIR --stream=xbstream | gzip > $TARGETDIR/stream.gz
+  $BACKCMD --backup $USEROPTIONS $ARGS --extra-lsndir=$TARGETDIR --incremental-basedir=$INCRBASEDIR --stream=xbstream | gzip > $TARGETDIR/backup.stream.gz
 else
   echo 'New full backup'
 
@@ -107,7 +114,7 @@ else
   mkdir -p $TARGETDIR
 
   # Create a new full backup
-  $BACKCMD --backup $USEROPTIONS $ARGS --extra-lsndir=$TARGETDIR --stream=xbstream | gzip > $TARGETDIR/stream.gz
+  $BACKCMD --backup $USEROPTIONS $ARGS --extra-lsndir=$TARGETDIR --stream=xbstream | gzip > $TARGETDIR/backup.stream.gz
 fi
 
 MINS=$(($FULLBACKUPCYCLE * ($KEEP + 1 ) / 60))
