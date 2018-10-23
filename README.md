@@ -54,7 +54,7 @@ mariabackup --prepare --target-dir base/2018-10-23_10-07-31/backup/ --user backu
 # stop mairadb
 service mariadb stop
 
-# delete datadir
+# empty datadir
 mv /data/mysql/ /data/mysql_bak/
 
 # copy-back
