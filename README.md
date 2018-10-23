@@ -6,6 +6,9 @@
 [Incremental Backup and Restore with Mariabackup](https://mariadb.com/kb/en/library/incremental-backup-and-restore-with-mariabackup/)
 
 ---
+## Install mariabackup
+    sudo apt install mariadb-backup
+
 ## Create a backup user
     GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'backup'@'localhost' identified by 'YourPassword';
     FLUSH PRIVILEGES;
