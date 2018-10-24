@@ -18,7 +18,7 @@
 
 ## Crontab
     #MySQL Backup
-    30 2 * * * MYSQL_PASSWORD=YourPassword bash /data/script/run-mariabackup.sh > /data/script/logs/run-mariabackup.sh.out.$(date +"%Y-%m-%d_%H-%M-%S") 2>&1
+    30 2 * * * MYSQL_PASSWORD=YourPassword bash /data/script/run-mariabackup.sh > /data/script/logs/run-mariabackup.sh.out 2>&1
 
 ---
 ## Restore Example
