@@ -1,29 +1,39 @@
+# README
+
 *forked from [jmfederico/run-xtrabackup.sh](https://gist.github.com/jmfederico/1495347)*
 
-*Note: have tested on Ubuntu 18.04 with mariadb 10.3*
+Note: have tested on Ubuntu 18.04 with MariaDB 10.3
 
 ## Links
+
 [Full Backup and Restore with Mariabackup](https://mariadb.com/kb/en/library/full-backup-and-restore-with-mariabackup/)
 
 [Incremental Backup and Restore with Mariabackup](https://mariadb.com/kb/en/library/incremental-backup-and-restore-with-mariabackup/)
 
 ---
+
 ## Install mariabackup
+
     sudo apt install mariadb-backup
 
 ## Create a backup user
+
     GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'backup'@'localhost' identified by 'YourPassword';
     FLUSH PRIVILEGES;
 
 ## Usage
+
     MYSQL_PASSWORD=YourPassword bash run-mariabackup.sh
 
 ## Crontab
+
     #MySQL Backup
     30 2 * * * MYSQL_PASSWORD=YourPassword bash /data/script/run-mariabackup.sh > /data/script/logs/run-mariabackup.sh.out 2>&1
 
 ---
+
 ## Restore Example
+
     tree /data/mysql_backup/
     /data/mysql_backup/
     ├── base
