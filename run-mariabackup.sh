@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Create a backup user
-# GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'backup'@'localhost' identified by 'YourPassword';
+# GRANT RELOAD, PROCESS, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'backup'@'localhost' identified by 'YourPassword';
 # FLUSH PRIVILEGES;
 #
 # Usage:
