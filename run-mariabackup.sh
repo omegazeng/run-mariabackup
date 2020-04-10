@@ -15,6 +15,28 @@ BACKCMD=mariabackup # Galera Cluster uses mariabackup instead of xtrabackup.
 BACKDIR=/data/mysql_backup
 FULLBACKUPCYCLE=604800 # Create a new full backup every X seconds
 KEEP=3 # Number of additional backups cycles a backup should kept for.
+LOCKDIR=/tmp/mariabackup.lock
+
+ReleaseLockAndExitWithCode () {
+  if rmdir $LOCKDIR
+  then
+    echo "Lock directory removed"
+  else
+    echo "Could not remove lock dir" >&2
+  fi
+  exit $1
+}
+
+GetLockOrDie () {
+  if mkdir $LOCKDIR
+  then
+    echo "Lock directory created"
+  else
+    echo "Could not create lock directory" $LOCKDIR
+    echo "Is another backup running?"
+    exit 1
+  fi
+}
 
 USEROPTIONS="--user=${MYSQL_USER} --password=${MYSQL_PASSWORD} --host=${MYSQL_HOST} --port=${MYSQL_PORT}"
 ARGS=""
@@ -66,6 +88,8 @@ then
   exit 1
 fi
 
+GetLockOrDie
+
 echo "Check completed OK"
 
 # Find latest backup directory
@@ -89,7 +113,7 @@ then
   if test ! -d $INCRBACKDIR/$LATEST -o ! -w $INCRBACKDIR/$LATEST
   then
     echo $INCRBACKDIR/$LATEST 'does not exist or is not writable'
-    exit 1
+    ReleaseLockAndExitWithCode 1
   fi
 
   LATESTINCR=`find $INCRBACKDIR/$LATEST -mindepth 1  -maxdepth 1 -type d | sort -nr | head -1`
@@ -128,9 +152,8 @@ do
   rm -rf $INCRBACKDIR/$DEL
 done
 
-
 SPENT=$((`date +%s` - $START))
 echo
 echo "took $SPENT seconds"
 echo "completed: `date`"
-exit 0
+ReleaseLockAndExitWithCode 0
