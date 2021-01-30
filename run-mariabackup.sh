@@ -12,6 +12,7 @@ MYSQL_USER=backup
 MYSQL_HOST=localhost
 MYSQL_PORT=3306
 BACKCMD=mariabackup # Galera Cluster uses mariabackup instead of xtrabackup.
+GZIPCMD=pigz -p8
 BACKDIR=/data/mysql_backup
 FULLBACKUPCYCLE=604800 # Create a new full backup every X seconds
 KEEP=3 # Number of additional backups cycles a backup should kept for.
@@ -130,7 +131,7 @@ then
   mkdir -p $TARGETDIR
 
   # Create incremental Backup
-  $BACKCMD --backup $USEROPTIONS $ARGS --extra-lsndir=$TARGETDIR --incremental-basedir=$INCRBASEDIR --stream=xbstream | gzip > $TARGETDIR/backup.stream.gz
+  $BACKCMD --backup $USEROPTIONS $ARGS --extra-lsndir=$TARGETDIR --incremental-basedir=$INCRBASEDIR --stream=xbstream | $GZIPCMD > $TARGETDIR/backup.stream.gz
 else
   echo 'New full backup'
 
@@ -138,7 +139,7 @@ else
   mkdir -p $TARGETDIR
 
   # Create a new full backup
-  $BACKCMD --backup $USEROPTIONS $ARGS --extra-lsndir=$TARGETDIR --stream=xbstream | gzip > $TARGETDIR/backup.stream.gz
+  $BACKCMD --backup $USEROPTIONS $ARGS --extra-lsndir=$TARGETDIR --stream=xbstream | $GZIPCMD > $TARGETDIR/backup.stream.gz
 fi
 
 MINS=$(($FULLBACKUPCYCLE * ($KEEP + 1 ) / 60))
