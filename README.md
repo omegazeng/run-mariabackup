@@ -18,8 +18,15 @@ Note: have tested on Ubuntu 18.04 with MariaDB 10.3
 
 ## Create a backup user
 
-    GRANT RELOAD, PROCESS, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'backup'@'localhost' identified by 'YourPassword';
-    FLUSH PRIVILEGES;
+```sql
+-- See https://mariadb.com/kb/en/mariabackup-overview/#authentication-and-privileges
+CREATE USER 'backup'@'localhost' IDENTIFIED BY 'YourPassword';
+-- MariaDB < 10.5:
+GRANT RELOAD, PROCESS, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'backup'@'localhost';
+-- MariaDB >= 10.5:
+GRANT RELOAD, PROCESS, LOCK TABLES, BINLOG MONITOR ON *.* TO 'backup'@'localhost';
+FLUSH PRIVILEGES;
+```
 
 ## Usage
 
