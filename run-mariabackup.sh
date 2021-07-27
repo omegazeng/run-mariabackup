@@ -1,7 +1,11 @@
 #!/bin/sh
 
 # Create a backup user
-# GRANT RELOAD, PROCESS, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'backup'@'localhost' identified by 'YourPassword';
+# CREATE USER 'backup'@'localhost' IDENTIFIED BY 'YourPassword';
+# MariaDB < 10.5:
+#   GRANT RELOAD, PROCESS, LOCK TABLES, REPLICATION CLIENT ON *.* TO 'backup'@'localhost';
+# MariaDB >= 10.5:
+#   GRANT RELOAD, PROCESS, LOCK TABLES, BINLOG MONITOR ON *.* TO 'backup'@'localhost';
 # FLUSH PRIVILEGES;
 #
 # Usage:
