@@ -44,6 +44,10 @@ GetLockOrDie () {
 }
 
 USEROPTIONS="--user=${MYSQL_USER} --password=${MYSQL_PASSWORD} --host=${MYSQL_HOST} --port=${MYSQL_PORT}"
+# Arguments may include amongst others:
+# --parallel=2  => Number of threads to use for parallel datafiles transfer. Default value is 1.
+# --galera-info => Creates the xtrabackup_galera_info file which contains the local node state
+# at the time of the backup. Option should be used when performing the backup of MariaDB Galera Cluster.
 ARGS=""
 BASEBACKDIR=$BACKDIR/base
 INCRBACKDIR=$BACKDIR/incr
