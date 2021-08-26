@@ -19,7 +19,7 @@ BACKCMD=mariabackup # Galera Cluster uses mariabackup instead of xtrabackup.
 GZIPCMD=gzip  # pigz # pigz (a parallel implementation of gzip) could be used if available.
 BACKDIR=/data/mysql_backup
 FULLBACKUPCYCLE=604800 # Create a new full backup every X seconds
-KEEP=3 # Number of additional backups cycles a backup should kept for.
+KEEP=3  # Number of additional backups cycles a backup should be kept for.
 LOCKDIR=/tmp/mariabackup.lock
 
 ReleaseLockAndExitWithCode () {
