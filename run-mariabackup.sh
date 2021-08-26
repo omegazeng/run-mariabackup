@@ -100,7 +100,7 @@ echo "Check completed OK"
 # Find latest backup directory
 LATEST=`find $BASEBACKDIR -mindepth 1 -maxdepth 1 -type d -printf "%P\n" | sort -nr | head -1`
 
-AGE=`stat -c %Y $BASEBACKDIR/$LATEST`
+AGE=`stat -c %Y $BASEBACKDIR/$LATEST/backup.stream.gz`
 
 if [ "$LATEST" -a `expr $AGE + $FULLBACKUPCYCLE + 5` -ge $START ]
 then
