@@ -19,7 +19,7 @@ BACKCMD=mariabackup # Galera Cluster uses mariabackup instead of xtrabackup.
 GZIPCMD=gzip  # pigz # pigz (a parallel implementation of gzip) could be used if available.
 BACKDIR=/data/mysql_backup
 FULLBACKUPCYCLE=604800 # Create a new full backup every X seconds
-KEEP=3 # Number of additional backups cycles a backup should kept for.
+KEEP=3  # Number of additional backups cycles a backup should be kept for.
 LOCKDIR=/tmp/mariabackup.lock
 
 ReleaseLockAndExitWithCode () {
@@ -44,6 +44,10 @@ GetLockOrDie () {
 }
 
 USEROPTIONS="--user=${MYSQL_USER} --password=${MYSQL_PASSWORD} --host=${MYSQL_HOST} --port=${MYSQL_PORT}"
+# Arguments may include amongst others:
+# --parallel=2  => Number of threads to use for parallel datafiles transfer. Default value is 1.
+# --galera-info => Creates the xtrabackup_galera_info file which contains the local node state
+# at the time of the backup. Option should be used when performing the backup of MariaDB Galera Cluster.
 ARGS=""
 BASEBACKDIR=$BACKDIR/base
 INCRBACKDIR=$BACKDIR/incr
@@ -100,7 +104,7 @@ echo "Check completed OK"
 # Find latest backup directory
 LATEST=`find $BASEBACKDIR -mindepth 1 -maxdepth 1 -type d -printf "%P\n" | sort -nr | head -1`
 
-AGE=`stat -c %Y $BASEBACKDIR/$LATEST`
+AGE=`stat -c %Y $BASEBACKDIR/$LATEST/backup.stream.gz`
 
 if [ "$LATEST" -a `expr $AGE + $FULLBACKUPCYCLE + 5` -ge $START ]
 then
