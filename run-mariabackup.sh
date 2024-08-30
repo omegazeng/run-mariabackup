@@ -158,8 +158,8 @@ echo "Cleaning up old backups (older than $MINS minutes) and temporary files"
 for DEL in `find $BASEBACKDIR -mindepth 1 -maxdepth 1 -type d -mmin +$MINS -printf "%P\n"`
 do
   echo "deleting $DEL"
-  rm -rf $BASEBACKDIR/$DEL
-  rm -rf $INCRBACKDIR/$DEL
+  rm -rf ${BASEBACKDIR:?}/$DEL
+  rm -rf ${INCRBACKDIR:?}/$DEL
 done
 
 SPENT=$((`date +%s` - $START))
